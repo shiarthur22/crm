@@ -1,8 +1,11 @@
 package com.xxxx.crm.controller;
 
 import com.xxxx.base.BaseController;
+import com.xxxx.crm.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
 
 /**
  * @author arthur
@@ -10,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class IndexController extends BaseController {
+
+    @Resource
+    private UserService userService;
 
     /**
      * 系统登录页
