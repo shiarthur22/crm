@@ -33,6 +33,13 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
         mv.setViewName("error");
         mv.addObject("code",400);
         mv.addObject("msg","系统异常，请稍后再试...");
+
+        if(ex instanceof NoLoginException){
+            mv.setViewName("no_login");
+            mv.addObject("msg","用户未登录!");
+            mv.addObject("ctx",request.getContextPath());
+            return  mv;
+        }
         
         if(handler instanceof  HandlerMethod){
             HandlerMethod hm = (HandlerMethod) handler;
