@@ -24,6 +24,7 @@
     where is_valid=1 and user_name=#{userName}
   </select>
 
+  <!--根据用户id查询用户信息-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

@@ -11,6 +11,8 @@ public class LoginUserUtil {
 
     /**
      * 从cookie中获取userId
+     *      此时的userId时一个字符串
+     *      需要经过UserIdBase64解密
      * @param request
      * @return
      */

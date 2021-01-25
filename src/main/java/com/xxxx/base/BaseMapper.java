@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * BaseMapper  基本方法定义
+ * @author NeXT
  */
 public interface BaseMapper<T,ID> {
     /**

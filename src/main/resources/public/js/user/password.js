@@ -12,7 +12,7 @@ layui.use(['form','jquery','jquery_cookie'], function () {
             type:"post",
             url:ctx+"/user/updatePassword",
             data:{
-                oldPassword:data.old_password,
+                oldPassword:data.old_password,   
                 newPassword:data.new_password,
                 confirmPassword:data.again_password
             },

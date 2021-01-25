@@ -25,6 +25,7 @@ layui.use(['form','jquery','jquery_cookie'], function () {
             success:function (data) {
                 if(data.code==200){
                     layer.msg('登录成功', function () {
+                        // 将获取到的用户信息存放在cookie中
                         var result =data.result;
                         $.cookie("userIdStr",result.userIdStr);
                         $.cookie("userName",result.userName);
@@ -43,6 +44,7 @@ layui.use(['form','jquery','jquery_cookie'], function () {
                 }
             }
         });
+        // button按钮类型时默认表单提交，设置为false则关闭
         return false;
     });
 });

@@ -2,6 +2,7 @@ package com.xxxx.crm.exceptions;
 
 /**
  * 自定义参数异常
+ * @author NeXT
  */
 public class ParamsException extends RuntimeException {
     private Integer code=300;

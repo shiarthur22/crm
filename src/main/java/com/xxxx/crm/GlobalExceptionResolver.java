@@ -20,29 +20,20 @@ import java.io.PrintWriter;
  */
 @Component
 public class GlobalExceptionResolver implements HandlerExceptionResolver {
+    /**
+     *  方法返回值类型
+     *       视图
+     *       json
+     *  如何判断方法返回的是视图  还是 json?
+     *     约定:如果方法级别配置@ResponseBody  方法响应内容为json  反之 方法响应内容为html页面
+     */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        /**
-         *   方法返回值类型
-         *       视图
-         *       json
-         *  如何判断方法返回的是视图  还是 json?
-         *     约定:如果方法级别配置@ResponseBody  方法响应内容为json  反之 方法响应内容为html页面
-         */
         ModelAndView mv=new ModelAndView();
         mv.setViewName("error");
         mv.addObject("code",400);
         mv.addObject("msg","系统异常，请稍后再试...");
-
-        if(ex instanceof NoLoginException){
-            mv.setViewName("no_login");
-            mv.addObject("msg","用户未登录!");
-            mv.addObject("ctx",request.getContextPath());
-            return  mv;
-        }
-
-
-
+        
         if(handler instanceof  HandlerMethod){
             HandlerMethod hm = (HandlerMethod) handler;
             ResponseBody responseBody= hm.getMethod().getDeclaredAnnotation(ResponseBody.class);
