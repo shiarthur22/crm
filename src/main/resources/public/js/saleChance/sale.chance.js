@@ -86,4 +86,26 @@ layui.use(['table','layer'],function(){
         })
     });
 
+    /**
+     * 头工具栏事件
+     */
+    table.on('toolbar(saleChances)',function (obj) {
+        switch (obj.event) {
+            case "add":
+                openAddOrUpdateSaleChanceDialog();
+                break;
+        }
+    })
+
+    function openAddOrUpdateSaleChanceDialog() {
+        layui.layer.open({
+            title:"营销机会管理-机会添加",
+            type:2,
+            area:["700px","500px"],
+            maxmin:true,
+            content:ctx+"/sale_chance/addSaleChancePage"
+        })
+    }
+
+
 });
