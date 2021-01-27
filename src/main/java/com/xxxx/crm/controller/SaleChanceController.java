@@ -8,10 +8,8 @@ import com.xxxx.crm.service.UserService;
 import com.xxxx.crm.utils.LoginUserUtil;
 import com.xxxx.crm.vo.SaleChance;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -69,8 +67,35 @@ public class SaleChanceController extends BaseController {
      * 跳转到 营销机会管理的添加和更新页面
      * @return
      */
-    @RequestMapping("addSaleChancePage")
-    public String openAddOrUpdateSaleChanceDialog(){
+    @RequestMapping("addOrUpdateSaleChancePage")
+    public String openAddOrUpdateSaleChanceDialog(Integer id, Model model){
+        if(null != id){
+            model.addAttribute("saleChance",saleChanceService.selectByPrimaryKey(id));
+        }
         return "saleChance/add_update";
+    }
+
+    /**
+     * 营销机会更新
+     * @param saleChance
+     * @return
+     */
+    @RequestMapping("update")
+    @ResponseBody
+    public ResultInfo updateSaleChance(SaleChance saleChance){
+        saleChanceService.updateSaleChance(saleChance);
+        return success("机会数据更新成功");
+    }
+
+    /**
+     * 机会数据批量删除
+     * @param ids
+     * @return
+     */
+    @RequestMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteSaleChance(Integer[] ids){
+        saleChanceService.deleteSaleChance(ids);
+        return success("机会数据删除成功！");
     }
 }

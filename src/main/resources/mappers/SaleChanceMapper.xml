@@ -43,6 +43,16 @@
     </where>
   </select>
 
+  <!--营销机会记录删除-->
+  <update id="deleteBatch">
+    update t_sale_chance
+    set is_valid=0
+    where id in
+    <foreach collection="array" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

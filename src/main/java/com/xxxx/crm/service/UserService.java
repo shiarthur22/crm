@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * service：
@@ -104,5 +106,13 @@ public class UserService extends BaseService<User,Integer> {
         AssertUtil.isTrue(!(temp.getUserPwd().equals(Md5Util.encode(oldPassword))),"原始密码不正确!");
         AssertUtil.isTrue(!(newPassword.equals(confirmPassword)),"新密码输入不一致!");
         AssertUtil.isTrue(oldPassword.equals(newPassword),"新密码与原始密码不能相同!");
+    }
+
+    /**
+     * 查询指派人
+     * @return
+     */
+    public List<Map<String,Object>> queryAllSales(){
+        return userMapper.queryAllSales();
     }
 }

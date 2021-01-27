@@ -94,16 +94,89 @@ layui.use(['table','layer'],function(){
             case "add":
                 openAddOrUpdateSaleChanceDialog();
                 break;
+            case "del":
+                delSaleChance(table.checkStatus(obj.config.id).data);
+                break;
         }
     })
 
-    function openAddOrUpdateSaleChanceDialog() {
+    /**
+     * 行工具栏监听事件
+     */
+    table.on('tool(saleChances)',function (obj){
+        var layEvent =obj.event;
+        if(layEvent === "edit"){
+            openAddOrUpdateSaleChanceDialog(obj.data.id);
+        }else if(layEvent === "del"){
+            layer.confirm("确认删除当前记录?",{icon: 3, title: "机会数据管理"},function (index) {
+                $.post(ctx+"/sale_chance/delete",{ids:obj.data.id},function (data) {
+                    if(data.code==200){
+                        layer.msg("删除成功");
+                        tableIns.reload();
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                })
+            })
+        }
+    })
+
+    /**
+     * 批量删除
+     * @param datas:选择的待删除记录数组
+     */
+    function delSaleChance(datas){
+        if(datas.length==0){
+            layer.msg("请选择待删除记录!");
+            return;
+        }
+
+        layer.confirm("确定删除选中的记录",{
+            btn:['确定','取消']
+        },function (index) {
+            layer.close(index);
+            // ids=10&ids=20&ids=30
+            var ids="ids=";
+            for(var i=0;i<datas.length;i++){
+                if(i<datas.length-1){
+                    ids=ids+datas[i].id+"&ids=";
+                }else{
+                    ids=ids+datas[i].id;
+                }
+            }
+
+            $.ajax({
+                type:"post",
+                url:ctx+"/sale_chance/delete",
+                data:ids,
+                dataType:"json",
+                success:function (data) {
+                    if(data.code==200){
+                        tableIns.reload();
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                }
+            })
+        })
+    }
+
+    /**
+     * 打开添加或更新对话框
+     */
+    function openAddOrUpdateSaleChanceDialog(sid) {
+        var title = "营销机会管理-机会添加"
+        var url = ctx+"/sale_chance/addOrUpdateSaleChancePage";
+        if (sid){
+            title = "营销机会管理-机会更新";
+            url = url+"?id="+sid;
+        }
         layui.layer.open({
-            title:"营销机会管理-机会添加",
+            title:title,
             type:2,
             area:["700px","500px"],
             maxmin:true,
-            content:ctx+"/sale_chance/addSaleChancePage"
+            content:url
         })
     }
 

@@ -92,4 +92,51 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
         AssertUtil.isTrue(!(PhoneUtil.isMobile(linkPhone)),"手机号格式不合法");
     }
 
+    /**
+     * 营销机会管理添更新
+     * 1.参数校验
+     *     id 记录必须存在
+     *     customerName  客户名非空
+     *     linkMan  非空
+     *     linkPhone  非空 11位手机号
+     * 2.设置相关参数值
+     *     updateDate  系统当前时间
+     *       原始记录 未分配 修改后 已分配(分配人是否存在)
+     *          state   0--->1
+     *          assignTime   设置分配时间 系统时间
+     *          devResult  0--->1
+     *       原始记录  已分配  修改后  未分配
+     *         state 1-->0
+     *         assignTime  null
+     *         devResult 1-->0
+     *  3.执行更新 判断结果
+     * @param saleChance
+     */
+    public void updateSaleChance(SaleChance saleChance){
+        SaleChance temp = selectByPrimaryKey(saleChance.getId());
+        AssertUtil.isTrue(temp == null,"待更新记录不存在");
+        checkParams(saleChance.getCustomerName(),saleChance.getLinkMan(),saleChance.getLinkPhone());
+        saleChance.setUpdateDate(new Date());
+        if(StringUtils.isBlank(temp.getAssignMan())&&StringUtils.isNotBlank(saleChance.getAssignMan()) ){
+            saleChance.setState(StateStatus.STATED.getType());
+            saleChance.setAssignTime(new Date());
+            saleChance.setDevResult(DevResult.DEVING.getStatus());
+        }else if(StringUtils.isNotBlank(temp.getAssignMan()) && StringUtils.isBlank(saleChance.getAssignMan())){
+            saleChance.setState(StateStatus.UNSTATE.getType());
+            saleChance.setAssignTime(null);
+            saleChance.setDevResult(DevResult.UNDEV.getStatus());
+            saleChance.setAssignMan("");
+        }
+        AssertUtil.isTrue(updateByPrimaryKeySelective(saleChance)<1,"机会数据更新失败!");
+    }
+
+    /**
+     * 机会数据批量删除
+     * @param ids
+     */
+    public void deleteSaleChance(Integer[] ids) {
+        // 参数校验
+        AssertUtil.isTrue(null == ids && ids.length == 0,"请选择待删除的记录");
+        AssertUtil.isTrue(deleteBatch(ids)!= ids.length,"记录删除失败");
+    }
 }

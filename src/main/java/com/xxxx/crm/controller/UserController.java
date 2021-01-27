@@ -8,10 +8,13 @@ import com.xxxx.crm.utils.LoginUserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -50,5 +53,15 @@ public class UserController extends BaseController {
         ResultInfo resultInfo=new ResultInfo();
         userService.updateUserPassword(LoginUserUtil.releaseUserIdFromCookie(request),oldPassword,newPassword,confirmPassword);
         return resultInfo;
+    }
+
+    /**
+     * 查询指派人
+     * @return
+     */
+    @RequestMapping("user/sales")
+    @ResponseBody
+    public List<Map<String,Object>> queryAllSales(){
+        return userService.queryAllSales();
     }
 }
