@@ -12,10 +12,30 @@ public class SaleChanceQuery extends BaseQuery {
      * customerName：客户名
      * createMan：创建人
      * state：分配状态
+     * assignMan: 分配人
+     * devResult: 开发状态
      */
     private String customerName;
     private String createMan;
     private String state;
+    private Integer assignMan;
+    private Integer devResult;
+
+    public Integer getAssignMan() {
+        return assignMan;
+    }
+
+    public void setAssignMan(Integer assignMan) {
+        this.assignMan = assignMan;
+    }
+
+    public Integer getDevResult() {
+        return devResult;
+    }
+
+    public void setDevResult(Integer devResult) {
+        this.devResult = devResult;
+    }
 
     public String getCustomerName() {
         return customerName;

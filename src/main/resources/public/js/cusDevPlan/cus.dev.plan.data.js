@@ -26,10 +26,9 @@ layui.use(['table','layer'],function(){
     });
 
 
-    //头工具栏事件
-    table.on('toolbar(cusDevPlans)', function(obj){
-        switch(obj.event){
-            case "add":
+    table.on("toolbar(cusDevPlans)",function (obj) {
+        switch (obj.event) {
+            case "add" :
                 openAddOrUpdateCusDevPlanDialog();
                 break;
             case "success":
@@ -38,73 +37,66 @@ layui.use(['table','layer'],function(){
             case "failed":
                 updateSaleChanceDevResult($("input[name='id']").val(),3);
                 break;
-        };
+        }
     });
 
 
-
-    /**
-     * 行监听
-     */
-    table.on("tool(cusDevPlans)", function(obj){
+    table.on("tool(cusDevPlans)",function (obj) {
         var layEvent = obj.event;
-        if(layEvent === "edit") {
+        if(layEvent === "edit"){
             openAddOrUpdateCusDevPlanDialog(obj.data.id);
-        }else if(layEvent === "del") {
-            layer.confirm('确定删除当前数据？', {icon: 3, title: "开发计划管理"}, function (index) {
+        }else if(layEvent === "del"){
+            layer.confirm("确认删除当前记录?",{icon: 3, title: "客户开发计划管理"},function (index) {
                 $.post(ctx+"/cus_dev_plan/delete",{id:obj.data.id},function (data) {
                     if(data.code==200){
-                        layer.msg("操作成功！");
+                        layer.msg("删除成功");
                         tableIns.reload();
                     }else{
-                        layer.msg(data.msg, {icon: 5});
+                        layer.msg(data.msg);
                     }
-                });
+                })
             })
         }
-
     });
 
 
-    // 打开添加计划项数据页面
-    function openAddOrUpdateCusDevPlanDialog(id){
-        var url  =  ctx+"/cus_dev_plan/addOrUpdateCusDevPlanPage?sid="+$("input[name='id']").val();
-        var title="计划项管理-添加计划项";
+
+    function openAddOrUpdateCusDevPlanDialog(id) {
+        var title="计划项管理管理-添加计划项";
+        var url=ctx+"/cus_dev_plan/addOrUpdateCusDevPlanPage?sid="+$("input[name='id']").val();
         if(id){
-            url = url+"&id="+id;
-            title="计划项管理-更新计划项";
+            title="计划项管理管理-更新计划项";
+            url=url+"&id="+id;
         }
         layui.layer.open({
-            title : title,
-            type : 2,
-            area:["700px","400px"],
+            title:title,
+            type:2,
+            area:["700px","500px"],
             maxmin:true,
-            content : url
-        });
+            content:url
+        })
     }
-
-
 
 
 
     function updateSaleChanceDevResult(sid,devResult) {
-        layer.confirm('确定执行当前操作？', {icon: 3, title: "计划项维护"}, function (index) {
-            $.post(ctx+"/sale_chance/updateSaleChanceDevResult",
-                {
-                    id:sid,
-                    devResult:devResult
-                },function (data) {
+        layer.confirm("确认更新机会数据状态?",{icon: 3, title: "客户开发计划管理"},function (index) {
+            $.post(ctx+"/sale_chance/updateSaleChanceDevResult",{
+                id:sid,
+                devResult:devResult
+            },function (data) {
                 if(data.code==200){
-                    layer.msg("操作成功！");
+                    layer.msg("机会数据更新成功");
                     layer.closeAll("iframe");
-                    //刷新父页面
+                    // 刷新父页面
                     parent.location.reload();
                 }else{
-                    layer.msg(data.msg, {icon: 5});
+                    layer.msg(data.msg);
                 }
-            });
+            })
         })
     }
+
 
 
 

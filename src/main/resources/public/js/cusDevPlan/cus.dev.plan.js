@@ -2,7 +2,7 @@ layui.use(['table','layer'],function(){
     var layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
         table = layui.table;
-    //用户列表展示
+    //机会数据列表展示
     var  tableIns = table.render({
         elem: '#saleChanceList',
         url : ctx+'/sale_chance/list?state=1&flag=1',
@@ -54,46 +54,38 @@ layui.use(['table','layer'],function(){
 
 
     // 多条件搜索
-    $(".search_btn").on("click",function(){
+    $(".search_btn").on("click",function () {
         table.reload("saleChanceListTable",{
-            page: {
-                curr: 1 //重新从第 1 页开始
+            page:{
+                curr:1
             },
-            where: {
-                customerName: $("input[name='customerName']").val(),  //客户名
-                createMan: $("input[name='createMan']").val(), //创建人
-                devResult:$("#devResult").val()  //开发状态
+            where:{
+                customerName:$("input[name='customerName']").val(),// 客户名
+                createMan:$("input[name='createMan']").val(),// 创建人
+                devResult:$("#devResult").val()    //开发状态
             }
         })
     });
 
 
-    /**
-     * 行监听
-     */
-    table.on("tool(saleChances)", function(obj){
+    table.on("tool(saleChances)",function (obj) {
         var layEvent = obj.event;
-        if(layEvent === "dev") {
+        if(layEvent==="dev"){
             openCusDevPlanDialog("计划项数据维护",obj.data.id);
-        }else if(layEvent === "info") {
+        }else if(layEvent ==="info"){
             openCusDevPlanDialog("计划项数据详情",obj.data.id);
         }
-
     });
 
 
-    // 打开开发计划对话框
-    function openCusDevPlanDialog(title,sid){
+    function openCusDevPlanDialog(title,sid) {
         layui.layer.open({
-            title : title,
-            type : 2,
-            area:["750px","550px"],
+            title:title,
+            type:2,
+            area:["700px","500px"],
             maxmin:true,
-            content : ctx+"/cus_dev_plan/toCusDevPlanDataPage?sid="+sid
-        });
+            content:ctx+"/cus_dev_plan/toCusDevPlanDataPage?sid="+sid
+        })
     }
-
-
-
 
 });

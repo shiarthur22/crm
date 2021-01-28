@@ -20,7 +20,7 @@
 				</div>
 				<div class="layui-input-inline">
                     <select name="devResult"  id="devResult"  >
-                        <option value="" >请选择</option>
+                        <option value="" >开发状态</option>
                         <option value="0">未开发</option>
                         <option value="1" >开发中</option>
 						<option value="2" >开发成功</option>
@@ -49,7 +49,7 @@
 	</script>
 
 </form>
-<script type="text/javascript" src="${ctx}/static/js/cusDevPlan/cus.dev.plan.js"></script>
+<script type="text/javascript" src="${ctx}/js/cusDevPlan/cus.dev.plan.js"></script>
 
 </body>
 </html>
