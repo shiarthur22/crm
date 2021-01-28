@@ -53,7 +53,9 @@ layui.use(['table','layer'],function(){
     }
 
 
-    // 多条件搜索
+    /**
+     * 客户开发计划：多条件搜索
+     */
     $(".search_btn").on("click",function () {
         table.reload("saleChanceListTable",{
             page:{
@@ -67,7 +69,10 @@ layui.use(['table','layer'],function(){
         })
     });
 
-
+    /**
+     *  行工具栏事件
+     *      不同的状态显示不同的数据和标题
+     */
     table.on("tool(saleChances)",function (obj) {
         var layEvent = obj.event;
         if(layEvent==="dev"){
@@ -77,7 +82,11 @@ layui.use(['table','layer'],function(){
         }
     });
 
-
+    /**
+     * 行工具栏事件视图
+     * @param title
+     * @param sid
+     */
     function openCusDevPlanDialog(title,sid) {
         layui.layer.open({
             title:title,
