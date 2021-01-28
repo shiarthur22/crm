@@ -98,4 +98,18 @@ public class SaleChanceController extends BaseController {
         saleChanceService.deleteSaleChance(ids);
         return success("机会数据删除成功！");
     }
+
+    /**
+     * 客户开发计划：
+     *      开发状态设置
+     * @param id
+     * @param devResult
+     * @return
+     */
+    @RequestMapping("updateSaleChanceDevResult")
+    @ResponseBody
+    public ResultInfo updateSaleChanceDevResult(Integer id,Integer devResult){
+        saleChanceService.updateSaleChanceDevResult(id,devResult);
+        return success("开发状态更新成功");
+    }
 }

@@ -139,4 +139,17 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
         AssertUtil.isTrue(null == ids && ids.length == 0,"请选择待删除的记录");
         AssertUtil.isTrue(deleteBatch(ids)!= ids.length,"记录删除失败");
     }
+
+    /**
+     * 客户开发计划
+     *      开发状态设置
+     * @param id
+     * @param devResult
+     */
+    public void updateSaleChanceDevResult(Integer id, Integer devResult){
+        SaleChance temp = selectByPrimaryKey(id);
+        AssertUtil.isTrue(null == temp,"待更新记录不存在");
+        temp.setDevResult(devResult);
+        AssertUtil.isTrue(updateByPrimaryKeySelective(temp)<1,"机会数据状态更新失败");
+    }
 }
