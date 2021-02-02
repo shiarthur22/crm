@@ -47,6 +47,32 @@
       AND r.role_name = "销售"
   </select>
 
+  <!--客户管理：多条件查询-->
+  <select id="selectByParams" parameterType="com.xxxx.crm.query.UserQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from t_user
+    where is_valid=1
+        <if test="null != userName and userName != ''">
+            and user_name like concat('%',#{userName},'%')
+        </if>
+        <if test="null !=email and email !=''">
+            and email=#{email}
+        </if>
+        <if test="null !=phone and phone !=''">
+            and phone =#{phone}
+        </if>
+  </select>
+
+  <!--删除用户记录-->
+  <update id="deleteBatch" >
+    update t_user
+    set is_valid = 0
+    where id in
+    <foreach collection="array" open="(" separator="," close=")" item="item">
+      #{item}
+    </foreach>
+  </update>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
