@@ -4,6 +4,7 @@ import com.xxxx.base.BaseController;
 import com.xxxx.base.ResultInfo;
 import com.xxxx.crm.query.RoleQuery;
 import com.xxxx.crm.service.RoleService;
+import com.xxxx.crm.vo.Module;
 import com.xxxx.crm.vo.Role;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,5 +105,30 @@ public class RoleController extends BaseController {
     public ResultInfo deleteRole(Integer roleId){
         roleService.deleteRole(roleId);
         return success("角色记录删除成功");
+    }
+
+    /**
+     * 角色授权视图
+     * @param roleId
+     * @param model
+     * @return
+     */
+    @RequestMapping("toAddGrantPage")
+    public String toAddGrantPage(Integer roleId, Model model){
+        model.addAttribute("roleId",roleId);
+        return "role/grant";
+    }
+
+    /**
+     * 给角色添加菜单栏的权限（屁注释，操）
+     * @param mids
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("addGrant")
+    @ResponseBody
+    public ResultInfo addGrant(Integer[] mids,Integer roleId){
+        roleService.addGrant(mids,roleId);
+        return success("角色授权成功");
     }
 }

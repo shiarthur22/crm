@@ -3,11 +3,14 @@ package com.xxxx.crm.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xxxx.base.BaseService;
+import com.xxxx.crm.dao.ModuleMapper;
+import com.xxxx.crm.dao.PermissionMapper;
 import com.xxxx.crm.dao.RoleMapper;
 import com.xxxx.crm.dao.UserRoleMapper;
 import com.xxxx.crm.query.RoleQuery;
 import com.xxxx.crm.query.UserQuery;
 import com.xxxx.crm.utils.AssertUtil;
+import com.xxxx.crm.vo.Permission;
 import com.xxxx.crm.vo.Role;
 import com.xxxx.crm.vo.User;
 import org.apache.commons.lang3.StringUtils;
@@ -15,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 角色管理
@@ -32,6 +32,12 @@ public class RoleService extends BaseService<Role,Integer> {
 
     @Resource
     private UserRoleMapper userRoleMapper;
+
+    @Resource
+    private PermissionMapper permissionMapper;
+
+    @Resource
+    private ModuleMapper moduleMapper;
 
     /**
      * 查询所有的角色
@@ -118,5 +124,32 @@ public class RoleService extends BaseService<Role,Integer> {
         }
         role.setIsValid(0);
         AssertUtil.isTrue(updateByPrimaryKeySelective(role)<1,"角色记录删除失败");
+    }
+
+    /**
+     * 角色授权
+     *      核心表：t_permission
+     *      角色存在原始授权时，先删除原始授权记录，然后批量添加新的角色权限
+     * @param mids
+     * @param roleId
+     */
+    public void addGrant(Integer[] mids, Integer roleId) {
+        int total = permissionMapper.countPermissionByRoleId(roleId);
+        if (total>0){
+            AssertUtil.isTrue(permissionMapper.deletePermissionByRoleId(roleId)!=total,"角色授权失败");
+        }
+        if (null != mids && mids.length>0){
+            List<Permission> permissions = new ArrayList<>();
+            for (Integer mid:mids){
+                Permission permission = new Permission();
+                permission.setCreateDate(new Date());
+                permission.setModuleId(mid);
+                permission.setRoleId(roleId);
+                permission.setUpdateDate(new Date());
+                permission.setAclValue(moduleMapper.selectByPrimaryKey(mid).getOptValue());
+                permissions.add(permission);
+            }
+            AssertUtil.isTrue(permissionMapper.insertBatch(permissions)!=permissions.size(),"角色授权失败");
+        }
     }
 }

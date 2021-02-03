@@ -43,6 +43,9 @@ layui.use(['table','layer'],function(){
             case "add":
                 openAddOrUpdateRoleDialog();
                 break;
+            case "grant":
+                openAddGrantDialog(table.checkStatus(obj.config.id).data);
+                break;
         }
     });
 
@@ -65,9 +68,10 @@ layui.use(['table','layer'],function(){
         }
     });
 
-
-
-
+    /**
+     * 打开角色添加、更新
+     * @param id
+     */
     function openAddOrUpdateRoleDialog(id) {
         var title="角色管理-角色添加";
         var url=ctx+"/role/addOrUpdateRolePage";
@@ -84,6 +88,26 @@ layui.use(['table','layer'],function(){
         })
     }
 
-
+    /**
+     * 授权视图
+     * @param data
+     */
+    function openAddGrantDialog(datas) {
+        if(datas.length==0){
+            layer.msg("请选择待授权的角色记录!",{icon:5});
+            return;
+        }
+        if(datas.length>1){
+            layer.msg("暂不支持批量角色授权!",{icon:5});
+            return;
+        }
+        layui.layer.open({
+            title:"角色管理-角色授权",
+            type:2,
+            area:["700px","500px"],
+            maxmin:true,
+            content:ctx+"/role/toAddGrantPage?roleId="+datas[0].id
+        })
+    }
 
 });
