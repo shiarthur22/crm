@@ -13,4 +13,11 @@ public interface RoleMapper extends BaseMapper<Role,Integer> {
      * @return
      */
     List<Map<String,Object>> queryAllRoles(Integer userId);
+
+    /**
+     * 添加角色：角色名唯一
+     * @param roleName
+     * @return
+     */
+    Role queryRoleByRoleName(String roleName);
 }

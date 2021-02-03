@@ -32,13 +32,24 @@
     select count(1) from t_user_role where user_id = #{userId}
   </select>
 
+  <!--查询关联该角色的用户数-->
+  <select id="countUserRoleByRoleId" resultType="java.lang.Integer">
+    select count(1) from t_user_role where role_id=#{roleId}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_user_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
+  <!--删除用户所有的角色-->
   <delete id="deleteUserRoleByUserId" parameterType="int">
     delete from t_user_role where user_id=#{userId}
+  </delete>
+
+  <!--级联删除（t_user_role），删除关联该角色的用户-->
+  <delete id="deleteUserRoleByRoleId" parameterType="int">
+    delete from t_user_role where role_id = #{roleId}
   </delete>
 
   <insert id="insertSelective" parameterType="com.xxxx.crm.vo.UserRole">
