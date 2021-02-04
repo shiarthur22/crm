@@ -32,6 +32,21 @@
     where role_id=#{roleId}
   </select>
 
+  <!--角色授权-菜单显示控制：根据用户id查询角色id，再根据角色id查询菜单id-->
+  <select id="queryUserIdHasRoleIdHasModuleId" parameterType="int" resultType="java.lang.String">
+    select distinct p.acl_value
+    from t_user_role ur left join t_permission p on ur.role_id = p.role_id
+    where ur.user_id = #{userId}
+  </select>
+
+  <!--菜单删除-->
+  <select id="countPermissionByModuleId" parameterType="int" resultType="java.lang.Integer">
+    select count(1) from t_permission where module_id=#{mid}
+  </select>
+  <delete id="deletePermissionByModuleId" parameterType="int">
+    delete from t_permission where module_id=#{mid}
+  </delete>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_permission
     where id = #{id,jdbcType=INTEGER}

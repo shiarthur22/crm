@@ -135,8 +135,7 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
      * @param ids
      */
     public void deleteSaleChance(Integer[] ids) {
-        // 参数校验
-        AssertUtil.isTrue(null == ids && ids.length == 0,"请选择待删除的记录");
+        AssertUtil.isTrue(null == ids || ids.length == 0,"请选择待删除的记录");
         AssertUtil.isTrue(deleteBatch(ids)!= ids.length,"记录删除失败");
     }
 

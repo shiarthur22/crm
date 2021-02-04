@@ -34,6 +34,39 @@
     where is_valid=1
   </select>
 
+  <!--系统设置：获取菜单-->
+  <select id="queryModules" resultType="com.xxxx.crm.vo.Module">
+    select <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid=1
+  </select>
+
+  <!--菜单名校验（md注释，无能的注释）-->
+  <select id="queryModuleByGradeAndModuleName" resultType="com.xxxx.crm.vo.Module">
+    select <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid=1 and grade=#{grade} and module_name=#{moduleName}
+  </select>
+
+  <!--上级菜单校验（写了也看不懂操）-->
+  <select id="queryModuleByGradeAndUrl" resultType="com.xxxx.crm.vo.Module">
+    select <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid=1 and grade=#{grade} and url=#{url}
+  </select>
+
+  <!--该死的注释-->
+  <select id="queryModuleByOptValue" parameterType="string" resultType="com.xxxx.crm.vo.Module">
+    select <include refid="Base_Column_List"/>
+    from t_module
+    where is_valid=1 and opt_value=#{optValue}
+  </select>
+
+  <!--菜单删除-->
+  <select id="countSubModuleByParentId" resultType="java.lang.Integer">
+    select count(1) from t_module where is_valid=1 and parent_id=#{parentId}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_module
     where id = #{id,jdbcType=INTEGER}

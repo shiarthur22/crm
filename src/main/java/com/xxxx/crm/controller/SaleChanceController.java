@@ -2,6 +2,7 @@ package com.xxxx.crm.controller;
 
 import com.xxxx.base.BaseController;
 import com.xxxx.base.ResultInfo;
+import com.xxxx.crm.annotaions.RequirePermission;
 import com.xxxx.crm.query.SaleChanceQuery;
 import com.xxxx.crm.service.SaleChanceService;
 import com.xxxx.crm.service.UserService;
@@ -34,6 +35,7 @@ public class SaleChanceController extends BaseController {
      * @return
      */
     @RequestMapping("index")
+    @RequirePermission(code = "1010")
     public String index(){
         return "saleChance/sale_chance";
     }
@@ -45,6 +47,7 @@ public class SaleChanceController extends BaseController {
      */
     @GetMapping("list")
     @ResponseBody
+    @RequirePermission(code = "101001")
     public Map<String,Object> querySaleChaneByParams(SaleChanceQuery saleChanceQuery){
         return saleChanceService.querySaleChanceByParams(saleChanceQuery);
     }
@@ -57,6 +60,7 @@ public class SaleChanceController extends BaseController {
      */
     @PostMapping("save")
     @ResponseBody
+    @RequirePermission(code = "101002")
     public ResultInfo saveSaleChance(HttpServletRequest request, SaleChance saleChance){
         saleChance.setCreateMan(userService.selectByPrimaryKey(LoginUserUtil.releaseUserIdFromCookie(request)).getTrueName());
         saleChanceService.saveSaleChance(saleChance);
@@ -82,6 +86,7 @@ public class SaleChanceController extends BaseController {
      */
     @RequestMapping("update")
     @ResponseBody
+    @RequirePermission(code = "101004")
     public ResultInfo updateSaleChance(SaleChance saleChance){
         saleChanceService.updateSaleChance(saleChance);
         return success("机会数据更新成功");
@@ -94,6 +99,7 @@ public class SaleChanceController extends BaseController {
      */
     @RequestMapping("delete")
     @ResponseBody
+    @RequirePermission(code = "101003")
     public ResultInfo deleteSaleChance(Integer[] ids){
         saleChanceService.deleteSaleChance(ids);
         return success("机会数据删除成功！");

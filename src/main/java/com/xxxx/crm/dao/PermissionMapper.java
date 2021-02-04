@@ -29,4 +29,26 @@ public interface PermissionMapper extends BaseMapper<Permission,Integer> {
      * @return
      */
     List<Integer> queryRoleHasAllMids(Integer roleId);
+
+    /**
+     * 角色授权
+     *      菜单显示控制：根据用户id查询角色id，再根据角色id查询菜单id
+     * @param userId
+     * @return
+     */
+    List<String> queryUserIdHasRoleIdHasModuleId(Integer userId);
+
+    /**
+     * 系统设置-菜单管理：菜单删除（拥有菜单的总数量，包含父菜单下的所有子菜单）
+     * @param mid
+     * @return
+     */
+    Integer  countPermissionByModuleId(Integer mid);
+
+    /**
+     * 系统设置-菜单管理：菜单删除
+     * @param mid
+     * @return
+     */
+    int  deletePermissionByModuleId(Integer mid);
 }
