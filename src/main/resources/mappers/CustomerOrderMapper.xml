@@ -42,6 +42,12 @@
     where o.is_valid=1 and o.id=#{orderId}
   </select>
 
+  <!--最后一单的记录-->
+  <select id="queryLastCustomerOrderByCusId" resultType="com.xxxx.crm.vo.CustomerOrder">
+    select <include refid="Base_Column_List"/> from t_customer_order where cus_id=#{cusId} ORDER BY order_date desc limit 1
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_customer_order
     where id = #{id,jdbcType=INTEGER}

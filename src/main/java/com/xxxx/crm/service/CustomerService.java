@@ -3,19 +3,21 @@ package com.xxxx.crm.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xxxx.base.BaseService;
+import com.xxxx.crm.dao.CustomerLossMapper;
 import com.xxxx.crm.dao.CustomerMapper;
+import com.xxxx.crm.dao.CustomerOrderMapper;
 import com.xxxx.crm.query.CustomerQuery;
 import com.xxxx.crm.utils.AssertUtil;
 import com.xxxx.crm.utils.PhoneUtil;
 import com.xxxx.crm.vo.Customer;
+import com.xxxx.crm.vo.CustomerLoss;
+import com.xxxx.crm.vo.CustomerOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 客户管理
@@ -26,6 +28,12 @@ import java.util.Map;
 public class CustomerService extends BaseService<Customer,Integer> {
     @Resource
     private CustomerMapper customerMapper;
+
+    @Resource
+    private CustomerOrderMapper customerOrderMapper;
+
+    @Resource
+    private CustomerLossMapper customerLossMapper;
 
     /**
      * 客户管理：多条件查询
@@ -110,5 +118,40 @@ public class CustomerService extends BaseService<Customer,Integer> {
         AssertUtil.isTrue(StringUtils.isBlank(name),"客户名称不能为空");
         AssertUtil.isTrue(!(PhoneUtil.isMobile(phone)),"手机号格式不正确");
         AssertUtil.isTrue(StringUtils.isBlank(fr),"请指定公司法人");
+    }
+
+    /**
+     * 获取和客户流失的信息并添加到客户流失表中
+     * 1.查询待流失的客户数据
+     * 2.将流失的客户数据批量化添加到客户流失表中
+     * 3.批量更新客户流失状态
+     * 4.通过定时任务 定时流转流失客户数据到客户流失表中
+     */
+    public void updateCustomerState(){
+        List<Customer> customers = customerMapper.queryLossCustomer();
+        if(null != customers && customers.size()>0){
+            List<CustomerLoss> customerLosses = new ArrayList<>();
+            List<Integer> lossCusIds = new ArrayList<>();
+            customers.forEach(c->{
+                CustomerLoss customerLoss = new CustomerLoss();
+                // 0-暂缓流失状态   1-确认流失状态
+                customerLoss.setState(0);
+                customerLoss.setCreateDate(new Date());
+                customerLoss.setUpdateDate(new Date());
+                customerLoss.setIsValid(1);
+                customerLoss.setCusName(c.getName());
+                customerLoss.setCusNo(c.getKhno());
+                customerLoss.setCusManager(c.getCusManager());
+                // 最后一单的记录
+                CustomerOrder customerOrder = customerOrderMapper.queryLastCustomerOrderByCusId(c.getId());
+                if (null != customerOrder){
+                    customerLoss.setLastOrderTime(customerOrder.getOrderDate());
+                }
+                customerLosses.add(customerLoss);
+                lossCusIds.add(c.getId());
+            });
+            AssertUtil.isTrue(customerLossMapper.insertBatch(customerLosses)<1,"客户数据流转失败");
+            AssertUtil.isTrue(customerMapper.updateCustomerStateByIds(lossCusIds)!=lossCusIds.size(),"客户流转失败");
+        }
     }
 }

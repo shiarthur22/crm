@@ -12,4 +12,11 @@ public interface CustomerOrderMapper extends BaseMapper<CustomerOrder,Integer> {
      * @return
      */
     Map<String, Object> queryCustomerOrderByOrderId(Integer orderId);
+
+    /**
+     * 添加客户流失信息到客户流失表
+     * @param id
+     * @return
+     */
+    CustomerOrder queryLastCustomerOrderByCusId(Integer id);
 }
