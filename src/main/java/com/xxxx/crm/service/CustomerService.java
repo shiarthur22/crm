@@ -154,4 +154,20 @@ public class CustomerService extends BaseService<Customer,Integer> {
             AssertUtil.isTrue(customerMapper.updateCustomerStateByIds(lossCusIds)!=lossCusIds.size(),"客户流转失败");
         }
     }
+
+    /**
+     * 统计报表-客户贡献分析
+     * @param customerQuery
+     * @return
+     */
+    public Map<String, Object> queryCustomerContributionByParams(CustomerQuery customerQuery) {
+        Map<String,Object> map = new HashMap<>();
+        PageHelper.startPage(customerQuery.getPage(),customerQuery.getLimit());
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(customerMapper.queryCustomerContributionByParams(customerQuery));
+        map.put("code",0);
+        map.put("msg","");
+        map.put("count",pageInfo.getTotal());
+        map.put("data",pageInfo.getList());
+        return map;
+    }
 }

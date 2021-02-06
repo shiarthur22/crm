@@ -22,4 +22,10 @@ public interface UserMapper extends BaseMapper<User,Integer> {
      * @return
      */
     List<Map<String,Object>> queryAllSales();
+
+    /**
+     * 服务创建-服务处理：客户经理
+     * @return
+     */
+    List<Map<String, Object>> queryAllCustomerManager();
 }

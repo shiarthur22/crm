@@ -1,10 +1,15 @@
 package com.xxxx.crm.dao;
 
 import com.xxxx.base.BaseMapper;
+import com.xxxx.crm.query.CustomerQuery;
 import com.xxxx.crm.vo.Customer;
 
 import java.util.List;
+import java.util.Map;
 
+/**
+ * @author NeXT
+ */
 public interface CustomerMapper extends BaseMapper<Customer,Integer> {
 
     /**
@@ -26,4 +31,12 @@ public interface CustomerMapper extends BaseMapper<Customer,Integer> {
      * @return
      */
     int updateCustomerStateByIds(List<Integer> lossCusIds);
+
+    /**
+     * 统计报表-客户贡献分析
+     *  多条件查询
+     * @param customerQuery
+     * @return
+     */
+    List<Map<String,Object>> queryCustomerContributionByParams(CustomerQuery customerQuery);
 }

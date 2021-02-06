@@ -247,4 +247,8 @@ public class UserService extends BaseService<User,Integer> {
         AssertUtil.isTrue(null == ids || ids.length == 0,"请选择待删除的记录");
         AssertUtil.isTrue(deleteBatch(ids) != ids.length,"用户记录删除失败");
     }
+
+    public List<Map<String, Object>> queryAllCustomerManager() {
+        return userMapper.queryAllCustomerManager();
+    }
 }

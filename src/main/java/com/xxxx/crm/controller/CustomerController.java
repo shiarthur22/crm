@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -115,6 +116,17 @@ public class CustomerController extends BaseController{
     public String orderDetailPage(Integer orderId,Model model){
         model.addAttribute("order",customerOrderService.queryCustomerOrderByOrderId(orderId));
         return "customer/customer_order_detail";
+    }
+
+    /**
+     * 统计报表
+     * @param customerQuery
+     * @return
+     */
+    @RequestMapping("queryCustomerContributionByParams")
+    @ResponseBody
+    public Map<String,Object> queryCustomerContributionByParams(CustomerQuery customerQuery){
+        return customerService.queryCustomerContributionByParams(customerQuery);
     }
 
 
