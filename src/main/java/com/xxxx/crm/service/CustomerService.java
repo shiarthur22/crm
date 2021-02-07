@@ -170,4 +170,43 @@ public class CustomerService extends BaseService<Customer,Integer> {
         map.put("data",pageInfo.getList());
         return map;
     }
+
+    /**
+     * 统计报表-客户构成分析；折线图
+     * @return
+     */
+    public Map<String, Object> countCustomerMakeLineChart() {
+        Map<String,Object> map = new HashMap<String,Object>();
+        List<Map<String,Object>> list = customerMapper.countCustomerMake();
+        List<String> data1 = new ArrayList<String>();
+        List<Integer> data2 = new ArrayList<Integer>();
+        list.forEach(m->{
+            data1.add(m.get("level").toString());
+            data2.add(Integer.parseInt(m.get("total").toString()));
+        });
+        map.put("data1",data1);
+        map.put("data2",data2);
+        return map;
+    }
+
+    /**
+     * 统计报表-客户构成分析：饼状图 （pie chart）
+     * @return
+     */
+    public Map<String, Object> countCustomerMakePieChart() {
+        Map<String,Object> map = new HashMap<String,Object>();
+        List<Map<String,Object>> list = customerMapper.countCustomerMake();
+        List<String> data1 = new ArrayList<String>();
+        List<Map<String,Object>> data2 = new ArrayList<Map<String,Object>>();
+        list.forEach(m->{
+            data1.add(m.get("level").toString());
+            Map<String,Object> temp = new HashMap<>();
+            temp.put("name",m.get("level"));
+            temp.put("value",m.get("total"));
+            data2.add(temp);
+        });
+        map.put("data1",data1);
+        map.put("data2",data2);
+        return map;
+    }
 }

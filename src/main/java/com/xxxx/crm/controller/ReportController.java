@@ -18,10 +18,10 @@ public class ReportController extends BaseController {
         if(type==0){
             // 客户贡献分析页面
             return "report/customer_contri";
-        }else if(type==1 ){
+        }else if(type == 1){
             // 客户构成页面
             return "report/customer_make";
-        }else if(type==3 ){
+        }else if(type == 3){
             // 客户流失分析页面
             return "report/customer_loss";
         }else{

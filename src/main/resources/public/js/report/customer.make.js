@@ -2,11 +2,9 @@ layui.use(['layer','echarts'], function () {
     var $ = layui.jquery,
         echarts = layui.echarts;
 
-
-
     $.ajax({
         type:"post",
-        url:ctx+"/customer/countCutomerMake",
+        url:ctx+"/customer/countCustomerMakeLineChart",
         dataType:'json',
         success:function (data) {
             // 基于准备好的dom，初始化echarts实例
@@ -33,7 +31,7 @@ layui.use(['layer','echarts'], function () {
 
     $.ajax({
         type:"post",
-        url:ctx+"/customer/countCutomerMake02",
+        url:ctx+"/customer/countCustomerMakePieChart",
         dataType:'json',
         success:function (data) {
             // 基于准备好的dom，初始化echarts实例
@@ -100,8 +98,5 @@ layui.use(['layer','echarts'], function () {
             myChart.setOption(option);
         }
     })
-
-
-
 
 });

@@ -74,4 +74,6 @@ public class CustomerLossController extends BaseController {
         customerLossService.updateCustomerLossStateById(id,lossReason);
         return success("客户确认流失成功!");
     }
+
+    
 }

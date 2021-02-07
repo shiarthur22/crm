@@ -39,4 +39,10 @@ public interface CustomerMapper extends BaseMapper<Customer,Integer> {
      * @return
      */
     List<Map<String,Object>> queryCustomerContributionByParams(CustomerQuery customerQuery);
+
+    /**
+     * 统计报表-客户构成分析：折线图
+     * @return
+     */
+    List<Map<String, Object>> countCustomerMake();
 }

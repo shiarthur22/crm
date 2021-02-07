@@ -129,5 +129,24 @@ public class CustomerController extends BaseController{
         return customerService.queryCustomerContributionByParams(customerQuery);
     }
 
+    /**
+     * 统计报表-客户构成分析：折线图 （line chart）
+     * @return
+     */
+    @RequestMapping("countCustomerMakeLineChart")
+    @ResponseBody
+    public Map<String,Object> countCustomerMakeLineChart(){
+        return customerService.countCustomerMakeLineChart();
+    }
+
+    /**
+     * 统计报表-客户构成分析：饼状图 （pie chart）
+     * @return
+     */
+    @RequestMapping("countCustomerMakePieChart")
+    @ResponseBody
+    public Map<String,Object> countCustomerMakePieChart(){
+        return customerService.countCustomerMakePieChart();
+    }
 
 }

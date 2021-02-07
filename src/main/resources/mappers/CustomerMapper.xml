@@ -131,6 +131,14 @@
     order by total desc
   </select>
 
+  <!--客户构成分析：折线图数据-->
+  <select id="countCustomerMake" resultType="java.util.Map">
+    select level,count(1) as total
+    from t_customer
+    where is_valid = 1 and state = 0
+    group by level 
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_customer
     where id = #{id,jdbcType=INTEGER}
